@@ -1,6 +1,8 @@
 /** @jsx React.DOM */
 
-var Home = React.createClass({
+// EVENTS
+
+var Events = React.createClass({
   getInitialState: function() {
     return {
       eventsData: null
@@ -36,16 +38,17 @@ var Home = React.createClass({
     var _self = this;
     var events;
 
+
     if (this.state.eventsData) {
-      events = this.state.eventsData.map(function(venue) {
+      events = this.state.eventsData.map(function(venueObj) {
         return (
-          <li>
-            <h1>{venue.venue.name}</h1>
+          <li key={venueObj.venue.id} >
+            <h1>{venueObj.venue.name}</h1>
             <ul>
-              {venue.events.map(function(event) {
+              {venueObj.events.map(function(event) {
                 return (
-                  <li>
-                    <a href={event.url}>
+                  <li key={event.id} >
+                    <a href={event.url} >
                       <h3>{event.name}</h3>
                       <p>{event.description}</p>
                     </a>
@@ -61,18 +64,56 @@ var Home = React.createClass({
     }
 
     return (
-      <ul>
-        {events}
-      </ul>
+      <div id="events-container">
+        <ul>
+          {events}
+        </ul>
+      </div>
     );
   }
 });
 
-function renderHome() {
+// MAP
+
+var Map = React.createClass({
+  getInitialState: function() {
+    return {
+
+    };
+  },
+  buildMap: function() {
+    var map, mapTileLayer;
+
+    map = L.map('map-container').setView([51.505, -0.09], 13);
+  },
+  componentDidMount: function() {
+    this.buildMap();
+  },
+  render: function() {
+    return (
+      <div id="map-container"></div>
+    );
+  }
+});
+
+// HOME
+
+var Home = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <Events />
+        <Map />
+      </div>
+    );
+  }
+});
+
+function render() {
   React.render(
     <Home />,
     document.getElementById('container')
   );
 };
 
-$(document).ready(renderHome);
+$(document).ready(render);

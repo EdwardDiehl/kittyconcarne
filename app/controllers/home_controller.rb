@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    @events = Event.all
+    @venues = Venue.all
   end
 end

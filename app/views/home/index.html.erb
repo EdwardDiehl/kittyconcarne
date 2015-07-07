@@ -1,12 +1,19 @@
 <h1>All Events</h1>
 
 <ul>
-  <% @events.each do |event| %>
+  <% @venues.each do |venue| %>
     <li>
-      <a href='<%= event.url %>'>
-        <h3><%= event.name %> - <%= event.date %></h3>
-        <p><%= event.description %></p>
-      </a>
+      <h1><%= venue.name %></h1>
+      <ul>
+        <% venue.events.each do |event| %>
+          <li>
+            <a href='<%= event.url %>'>
+              <h3><%= event.name %> - <%= event.date %></h3>
+              <p><%= event.description %></p>
+            </a>
+          </li>
+        <% end %>
+      </ul>
     </li>
-  <% end %>
+  <% end %> 
 </ul>

@@ -2,6 +2,13 @@ class EventParserWorker
   include Sidekiq::Worker
 
   def perform
+    bowery = Venue.where(
+      name: 'Bowery Ballroom',
+      latitude: 40.7204065,
+      longitude: -73.9933583,
+      address: '6 Delancey St'
+    ).first_or_create!
+
     source = Net::HTTP.get('www.boweryballroom.com', '/calendar')
     html = Nokogiri::HTML(source)
 
@@ -24,7 +31,8 @@ class EventParserWorker
         name: title,
         url: url,
         description: description,
-        date: date
+        date: date,
+        venue_id: bowery.id
       )
     end
   end

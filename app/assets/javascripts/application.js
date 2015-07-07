@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require d3
+//= require moment
+//= require pikaday
+//= require turbolinks
 //= require react
 //= require react_ujs
 //= require components

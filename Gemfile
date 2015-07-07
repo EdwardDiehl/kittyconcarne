@@ -5,15 +5,18 @@ gem 'rails', '4.2.3'
 # Loads .env files.  Should be at or near top of Gemfile
 gem 'dotenv-rails', groups: [:development, :test]
 
-# data storage
+# Data storage
 gem 'sqlite3'
 
-# frontend
+# Frontend
 gem 'coffee-rails', '~> 4.1.0'
-gem 'd3-rails'
-gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'react-rails', '~> 1.0'
+gem 'requirejs-rails'
+gem 'd3-rails'
+gem 'momentjs-rails'
+gem 'pikaday-gem'
+gem 'font-awesome-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
@@ -24,8 +27,6 @@ gem 'jbuilder', '~> 2.0'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-
-
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

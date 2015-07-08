@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150707030124) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.datetime "date"
@@ -23,7 +26,7 @@ ActiveRecord::Schema.define(version: 20150707030124) do
     t.integer  "venue_id"
   end
 
-  add_index "events", ["venue_id"], name: "index_events_on_venue_id"
+  add_index "events", ["venue_id"], name: "index_events_on_venue_id", using: :btree
 
   create_table "venues", force: :cascade do |t|
     t.string   "name"
@@ -34,4 +37,5 @@ ActiveRecord::Schema.define(version: 20150707030124) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "events", "venues"
 end

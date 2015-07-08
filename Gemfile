@@ -6,7 +6,7 @@ gem 'rails', '4.2.3'
 gem 'dotenv-rails', groups: [:development, :test]
 
 # Data storage
-gem 'sqlite3'
+gem 'pg'
 
 # Frontend
 gem 'coffee-rails', '~> 4.1.0'

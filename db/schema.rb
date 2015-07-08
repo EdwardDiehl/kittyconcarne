@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20150707030124) do
   add_index "events", ["venue_id"], name: "index_events_on_venue_id", using: :btree
 
   create_table "venues", force: :cascade do |t|
+    t.string   "code"
     t.string   "name"
     t.float    "latitude"
     t.float    "longitude"

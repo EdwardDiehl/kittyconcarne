@@ -21,6 +21,7 @@ gem 'font-awesome-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
+gem 'migration_data'
 gem 'sidekiq'
 
 gem 'turbolinks'

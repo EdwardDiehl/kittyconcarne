@@ -11,5 +11,11 @@ AllCops:
 Style/StringLiterals:
   Enabled: false
 
+Style/Documentation:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 1000
+
+Metrics/MethodLength:
+  Max: 100

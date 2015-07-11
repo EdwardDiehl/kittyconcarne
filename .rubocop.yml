@@ -1,0 +1,15 @@
+AllCops:
+  Include:
+    - '**/config.ru'
+    - '**/Rakefile'
+  Exclude:
+    - 'config/**/*'
+    - 'db/**/*'
+  RunRailsCops: true
+
+# Always allow humans to choose the best string literal to use
+Style/StringLiterals:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 1000

@@ -7,7 +7,6 @@ class EventParserWorker
 
     @config = venue.parser_config
     parse_events!
-
   rescue StandardError => e
     Rails.logger.error(e)
   end
@@ -41,11 +40,20 @@ class EventParserWorker
   def event_list
     # GET it
     source = Net::HTTP.get(config[:base_url], config[:path])
-    html = Nokogiri::HTML(source)
+    html = Nokogiri::HTML(scrub(source))
 
     # Enumerate events
     calendar_html = html.css(config[:event_list])
     calendar_html.css(config[:event_list_item])
+  end
+
+  def scrub(source)
+    return unless config[:scrub].present?
+
+    config[:scrub].each_pair do |regex, replace|
+      source = source.gsub(regex, replace)
+    end
+    source
   end
 
   # Call generic proc on event

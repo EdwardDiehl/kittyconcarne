@@ -18,10 +18,10 @@ class EventParserWorker
 
   def parse_events!
     event_list.each do |event|
-      title = title_for(event)
-      url = url_for(event)
-      description = description_for(event)
-      date = date_for(event)
+      title = parse_attribute('title', event)
+      url = parse_attribute('url', event)
+      description = parse_attribute('description', event)
+      date = parse_attribute('date', event)
 
       Rails.logger.info(event) if [title, url, description, date].any?(&:blank?)
 
@@ -48,35 +48,11 @@ class EventParserWorker
     calendar_html.css(config[:event_list_item])
   end
 
-  # Call title proc defined in Venue config
-  def title_for(event)
-    config[:title].call(event)
+  # Call generic proc on event
+  def parse_attribute(attribute, event)
+    config[attribute.to_sym].call(event)
   rescue NoMethodError
-    Rails.logger.info("Could not parse title for event")
-    nil
-  end
-
-  # Call url proc defined in Venue config
-  def url_for(event)
-    config[:url].call(event)
-  rescue NoMethodError
-    Rails.logger.info("Could not parse url for event")
-    nil
-  end
-
-  # Call description proc defined in Venue config
-  def description_for(event)
-    config[:description].call(event)
-  rescue NoMethodError
-    Rails.logger.info("Could not parse description for event")
-    nil
-  end
-
-  # Call date proc defined in Venue config
-  def date_for(event)
-    config[:date].call(event)
-  rescue NoMethodError
-    Rails.logger.info("Could not parse date for event")
+    Rails.logger.info("Could not parse #{attribute} for event")
     nil
   end
 end

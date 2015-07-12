@@ -10,14 +10,15 @@ gem 'pg'
 
 # Frontend
 gem 'coffee-rails', '~> 4.1.0'
-gem 'jquery-rails'
-gem 'react-rails', '~> 1.0'
-gem 'requirejs-rails'
 gem 'd3-rails'
+gem 'font-awesome-rails'
+gem 'jquery-rails'
 gem 'leaflet-rails'
+gem 'modulejs-rails'
 gem 'momentjs-rails'
 gem 'pikaday-gem'
-gem 'font-awesome-rails'
+gem 'react-rails', '~> 1.0'
+gem 'requirejs-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
@@ -49,7 +50,6 @@ group :development, :test do
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'
-
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

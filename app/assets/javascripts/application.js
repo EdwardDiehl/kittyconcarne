@@ -10,14 +10,14 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require d3
 //= require jquery
 //= require jquery_ujs
-//= require d3
 //= require leaflet
 //= require leaflet-google
+//= require modulejs
 //= require moment
 //= require pikaday
-//= require turbolinks
 //= require react
 //= require react_ujs
 //= require components

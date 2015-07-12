@@ -49,7 +49,11 @@ group :development, :test do
   gem 'pry-stack_explorer'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+<<<<<<< Updated upstream
   # gem 'byebug'
+=======
+  #gem 'byebug'
+>>>>>>> Stashed changes
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

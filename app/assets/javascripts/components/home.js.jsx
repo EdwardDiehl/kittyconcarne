@@ -1,5 +1,4 @@
 // EVENT TICKER
-
 var EventTicker = React.createClass({
   render: function() {
     return (
@@ -8,30 +7,56 @@ var EventTicker = React.createClass({
   }
 });
 
-// VENUES
 
+// VENUES
 var Venues = React.createClass({
   getInitialState: function() {
     return {
       eventsData: null
     };
   },
-  enableSaving: function() {
-    $('.add').on('click', function() {
-      var eventId = $(this).parent().data().id;
+  enableSaveAdd: function() {
+    var eventId, status;
 
+    $('.save').on('click', function() {
+      var bookmark = $('span', this);
+
+      if (bookmark.hasClass('fa-bookmark-o')) {
+        bookmark.removeClass('fa-bookmark-o').addClass('fa-bookmark clicked');
+        $('span', $(this).next()).removeClass('clicked');
+      } else {
+        bookmark.removeClass('fa-bookmark clicked').addClass('fa-bookmark-o');
+      }
+
+      eventId = $(this).parents().eq(2).data().id;
+      status = 'save';
+      post();
+    });
+
+    $('.add').on('click', function() {
+      $('span', this).toggleClass('clicked');
+
+      $('span', $(this).prev()).removeClass('fa-bookmark clicked').addClass('fa-bookmark-o')
+
+      eventId = $(this).parents().eq(2).data().id;
+      status = 'add';
+      post();
+    });
+
+    function post() {
       $.ajax({
         type: 'POST',
         url: '/save',
         dataType: 'JSON',
         data: {'event_id': eventId},
+        // data: {'event_id': eventId, 'status': status},
         success: function(response, status, xhr) {
           console.log(eventId);
         },
         error: function(xhr, status, error) {
         }
       });
-    });
+    }
   },
   load: function() {
     var _self = this;
@@ -41,7 +66,7 @@ var Venues = React.createClass({
         eventsData: response
       });
 
-      _self.enableSaving();
+      _self.enableSaveAdd();
     }, this);
 
     function loadEvents(callback) {
@@ -54,7 +79,6 @@ var Venues = React.createClass({
           callback(response);
         },
         error: function(xhr, status, error) {
-
         }
       });
     }
@@ -65,37 +89,54 @@ var Venues = React.createClass({
     this.load();
   },
   render: function() {
-    var _self = this;
-    var venues;
+    var bookmark, add;
 
+    var bookmark = <span className="fa-bookmark-o"></span>;
+    var plus = <span className="fa-plus-circle"></span>;
+
+    var buttons = (
+      <div className="col-md-3 buttons">
+        <div className="row">
+          <div className="col-md-6 fa save">
+            {bookmark}
+          </div>
+          <div className="col-md-6 fa add">
+            {plus}
+          </div>
+        </div>
+      </div>
+    );
+    
     if (this.state.eventsData) {
       return (
-        <div id="venue-container">
-        {this.state.eventsData.map(function(venueObj) {
-          return (
-            <div key={venueObj.venue.id} className="venue">
-              <div className="venue-name">
-                <span>{venueObj.venue.name}</span>
-              </div>
-              <div>
-                {venueObj.events.map(function(event) {
-                  return (
-                    <div key={event.id} data-id={event.id} className="event">
-                      <div className="event-info">
-                        <a href={event.url} >
-                          <span className="event-name">{event.name}</span>
+        <div id="venue-container" className="container-fluid">
+          <div className="row">
+          {this.state.eventsData.map(function(venueObj) {
+            return (
+              <div key={venueObj.venue.id} className="col-md-3 venue">
+                <div className="venue-name">{venueObj.venue.name}</div>
+                <div>
+                  <div className="events-container">
+                  {venueObj.events.map(function(event) {
+                    return (
+                      <div key={event.id} data-id={event.id} className="row event">
+                        <a href={event.url} target="_blank">
+                          <div className="col-md-9 event-info">
+                            <span className="event-name">{event.name}</span>
+                            <div className="description">{event.description}</div>
+                            <div className="date">{event.date}</div>
+                          </div>
                         </a>
-                        <div className="description">{event.description}</div>
-                        <div className="date">{event.date}</div>
+                        {buttons}
                       </div>
-                      <div className="fa fa-plus add"></div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+                  </div>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+          </div>
         </div>
       )
     } 
@@ -107,8 +148,8 @@ var Venues = React.createClass({
   }
 });
 
-// FILTERS
 
+// FILTERS
 var Filters = React.createClass({
   render: function() {
     return (
@@ -117,8 +158,8 @@ var Filters = React.createClass({
   }
 });
 
-// MAP
 
+// MAP
 var Map = React.createClass({
   buildMap: function() {
     var map, mapTileLayer;
@@ -135,8 +176,8 @@ var Map = React.createClass({
   }
 });
 
-// SAVED EVENTS
 
+// SAVED EVENTS
 var SavedEvents = React.createClass({
   render: function() {
     return (
@@ -145,8 +186,8 @@ var SavedEvents = React.createClass({
   }
 });
 
-// HOME
 
+// HOME
 var Home = React.createClass({
   render: function() {
         // <EventTicker />

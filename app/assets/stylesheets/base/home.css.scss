@@ -1,21 +1,8 @@
 body {
   font-family: 'proxima-nova', sans-serif;
-  // font-weight: 300;
-  // font-size: 11px;
   padding: 60px;
-  color: #222;
-  background: #f2f2f2;
+  background: #222;
   height: 100%; 
-}
-
-a {
-  transition: color .3s ease-out;
-  text-decoration: none;
-  color: #444; 
-  
-  &:hover {
-    color: #777; 
-  }
 }
 
 .hidden {
@@ -31,42 +18,87 @@ a {
   }
 
   .venue {
-    width: 25%;
-    // height: 400px;
-    margin: 20px;
+    margin: 2%;
     float: left;
 
     .venue-name {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500;
       text-transform: uppercase;
+      color: #9f9f9f;
       padding-bottom: 8px;
+      text-align: center;
     }
 
-    .event {
-      border-top: 1px solid #000;
-      border-right: 1px solid #000;
-      border-left: 1px solid #000;
-      padding: 5px 5px 5px 10px;
-      overflow: hidden;
+    .events-container {
+      .event {
+        border-top: 1px solid #444;
+        border-right: 1px solid #444;
+        border-left: 1px solid #444;
+        padding: 10px;
+        overflow: hidden;
 
-      .event-name {
-        font-size: 14px;
-        font-weight: 500;
-      }
+        a {
+          transition: color .2s ease-out;
+          text-decoration: none;
 
-      .description, .date {
-        font-size: 12px;
-      }
+          .event-info {
+            float: left;
 
-      .event-info {
-        width: 70%;
-        float: left;
-      }
+            .event-name {
+              color: #adadad;
+              font-size: 16px;
+              font-weight: 500;
+              transition: color .2s ease-out;
+              // text-decoration: none;
+            }
 
-      .add {
-        height: 30px;
-        width: 30px;
+            .description, .date {
+              color: #777; 
+              font-size: 12px;
+              transition: color .2s ease-out;
+              // text-decoration: none;
+            }
+
+            &:hover {
+              .event-name {
+                color: #d6d6d6;
+                text-decoration: none;
+                
+                &:visited {
+                  color: #d6d6d6;
+                }
+              }
+
+              .description, .date {
+                color: #adadad;
+                text-decoration: none;
+                
+                &:visited {
+                  color: #adadad;
+                }
+              }
+            }
+          }
+        }
+
+        .buttons {
+          font-size: 18px;
+
+          div {
+            cursor: pointer;
+            transition: color .2s ease-out;
+            color: #6b6b6b; 
+
+            &:hover {
+              color: #d6d6d6; 
+            }
+
+            span.clicked {
+              color: #d6d6d6;
+            }
+          }
+        }
       }
     }
   }

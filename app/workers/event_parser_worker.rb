@@ -48,7 +48,7 @@ class EventParserWorker
   end
 
   def scrub(source)
-    return unless config[:scrub].present?
+    return source unless config[:scrub].present?
 
     config[:scrub].each_pair do |regex, replace|
       source = source.gsub(regex, replace)

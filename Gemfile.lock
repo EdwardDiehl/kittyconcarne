@@ -37,6 +37,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.2)
+    autoprefixer-rails (5.2.1)
+      execjs
+      json
     awesome_print (1.6.1)
     babel-source (5.6.16)
     babel-transpiler (0.7.0)
@@ -48,7 +51,12 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.3.5.1)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.3.0)
     builder (3.2.2)
+    byebug (4.0.5)
+      columnize (= 0.9.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coderay (1.1.0)
@@ -59,6 +67,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    columnize (0.9.0)
     connection_pool (2.2.0)
     d3-rails (3.5.5)
       railties (>= 3.1)
@@ -108,6 +117,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.1.0)
+      byebug (~> 4.0)
+      pry (~> 0.10)
     pry-doc (0.8.0)
       pry (~> 0.9)
       yard (~> 0.8)
@@ -206,6 +218,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   better_errors
+  bootstrap-sass (~> 3.3.5)
   coffee-rails (~> 4.1.0)
   d3-rails
   dotenv-rails
@@ -219,6 +232,7 @@ DEPENDENCIES
   pg
   pikaday-gem
   pry
+  pry-byebug
   pry-doc
   pry-rails
   pry-stack_explorer

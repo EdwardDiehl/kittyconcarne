@@ -16,15 +16,16 @@ class HomeController < ApplicationController
     end
   end
 
-  def save_event(event_id)
-    event = Event.find(event_id)
+  def save_event
+    event = Event.find(params[:event_id])
     return if [cookies.signed[:uuid], event].any?(&:blank?)
 
     user_event = UserEvent.where(
       uuid: cookies.signed[:uuid],
-      event_id: event_id
+      event_id: event.id
     ).first_or_create!
 
-    user_event.update_attributes!(status: Status::SAVED)
+    user_event.update_attributes!(status: UserEvent::Status::SAVED)
+    render json: true
   end
 end

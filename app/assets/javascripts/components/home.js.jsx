@@ -22,9 +22,9 @@ var Venues = React.createClass({
 
       $.ajax({
         type: 'POST',
-        dataType: 'json',
         url: '/save',
-        data: eventId,
+        dataType: 'JSON',
+        data: {'event_id': eventId},
         success: function(response, status, xhr) {
           console.log(eventId);
         },

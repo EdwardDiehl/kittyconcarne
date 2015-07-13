@@ -9,6 +9,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'pg'
 
 # Frontend
+gem 'bootstrap-sass', '~> 3.3.5'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'd3-rails'
 gem 'font-awesome-rails'

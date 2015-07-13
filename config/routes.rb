@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get 'events' => 'home#events'
 
+  post 'save' => 'home#save_event'
+
   root 'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

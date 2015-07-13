@@ -9,6 +9,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'pg'
 
 # Frontend
+gem 'bootstrap-sass', '~> 3.3.5'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'd3-rails'
 gem 'font-awesome-rails'
@@ -49,11 +50,7 @@ group :development, :test do
   gem 'pry-stack_explorer'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-<<<<<<< Updated upstream
   # gem 'byebug'
-=======
-  #gem 'byebug'
->>>>>>> Stashed changes
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

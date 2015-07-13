@@ -25,10 +25,11 @@
     > done
     ```
 
-0. **Create PostgreSQL Superuser Role**
+0. **Create PostgreSQL Superuser Role and Database**
 
     ```bash
     $ createuser -s kitty
+    $ createdb kittyconcarne_development
     ```
 
 0. **Install gems**

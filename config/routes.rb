@@ -5,7 +5,11 @@ Rails.application.routes.draw do
 
   get 'events' => 'home#events'
 
-  post 'save' => 'home#save_event'
+  post 'bookmark' => 'home#bookmark'
+
+  post 'attend' => 'home#attend'
+
+  post 'clear' => 'home#clear'
 
   root 'home#index'
 

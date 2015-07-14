@@ -15,41 +15,44 @@ var Venues = React.createClass({
       eventsData: null
     };
   },
-  enableSaveAdd: function() {
-    var eventId, status;
+  enableActions: function() {
+    var eventId;
 
-    $('.save').on('click', function() {
+    $('.bookmark').on('click', function() {
+      eventId = $(this).parents().eq(2).data().id;
+
       var bookmark = $('span', this);
+      var attending = $('span', $(this).next());
 
       if (bookmark.hasClass('fa-bookmark-o')) {
         bookmark.removeClass('fa-bookmark-o').addClass('fa-bookmark clicked');
-        $('span', $(this).next()).removeClass('clicked');
+        attending.removeClass('clicked');
+        post('/bookmark');
       } else {
         bookmark.removeClass('fa-bookmark clicked').addClass('fa-bookmark-o');
+        post('/clear')
       }
-
-      eventId = $(this).parents().eq(2).data().id;
-      status = 'save';
-      post();
     });
 
-    $('.add').on('click', function() {
-      $('span', this).toggleClass('clicked');
+    $('.attend').on('click', function() {
+      eventId = $(this).parents().eq(2).data().id;
 
+      $('span', this).toggleClass('clicked');
       $('span', $(this).prev()).removeClass('fa-bookmark clicked').addClass('fa-bookmark-o')
 
-      eventId = $(this).parents().eq(2).data().id;
-      status = 'add';
-      post();
+      if ($('span', this).hasClass('clicked')) {
+        post('/attend');
+      } else {
+        post('/clear')
+      }
     });
 
-    function post() {
+    function post(url) {
       $.ajax({
         type: 'POST',
-        url: '/save',
+        url: url,
         dataType: 'JSON',
         data: {'event_id': eventId},
-        // data: {'event_id': eventId, 'status': status},
         success: function(response, status, xhr) {
           console.log(eventId);
         },
@@ -66,7 +69,7 @@ var Venues = React.createClass({
         eventsData: response
       });
 
-      _self.enableSaveAdd();
+      _self.enableActions();
     }, this);
 
     function loadEvents(callback) {
@@ -89,53 +92,64 @@ var Venues = React.createClass({
     this.load();
   },
   render: function() {
-    var bookmark, add;
+    var bookmark, attend;
 
-    var bookmark = <span className="fa-bookmark-o"></span>;
-    var plus = <span className="fa-plus-circle"></span>;
+    function buildButtons(status) {
+      console.log(status)
+      if (status === 'bookmarked') {
+        bookmark = <span className="fa-bookmark clicked"></span>;
+        attend = <span className="fa-plus-circle"></span>;
+      } else if (status === 'attending') {
+        bookmark = <span className="fa-bookmark-o"></span>;
+        attend = <span className="fa-plus-circle clicked"></span>;
+      } else if (!status) {
+        bookmark = <span className="fa-bookmark-o"></span>;
+        attend = <span className="fa-plus-circle"></span>;
+      }
 
-    var buttons = (
-      <div className="col-md-3 buttons">
-        <div className="row">
-          <div className="col-md-6 fa save">
-            {bookmark}
-          </div>
-          <div className="col-md-6 fa add">
-            {plus}
+      return (
+        <div className="col-md-3 buttons">
+          <div className="row">
+            <div className="col-md-6 fa bookmark">
+              {bookmark}
+            </div>
+            <div className="col-md-6 fa attend">
+              {attend}
+            </div>
           </div>
         </div>
-      </div>
-    );
-    
+      );
+    }
+
     if (this.state.eventsData) {
       return (
         <div id="venue-container" className="container-fluid">
           <div className="row">
-          {this.state.eventsData.map(function(venueObj) {
-            return (
-              <div key={venueObj.venue.id} className="col-md-3 venue">
-                <div className="venue-name">{venueObj.venue.name}</div>
-                <div>
-                  <div className="events-container">
-                  {venueObj.events.map(function(event) {
-                    return (
-                      <div key={event.id} data-id={event.id} className="row event">
-                        <a href={event.url} target="_blank">
-                          <div className="col-md-9 event-info">
-                            <span className="event-name">{event.name}</span>
-                            <div className="description">{event.description}</div>
-                            <div className="date">{event.date}</div>
-                          </div>
-                        </a>
-                        {buttons}
-                      </div>
-                    )
-                  })}
+            {this.state.eventsData.map(function(venueObj) {
+              return (
+                <div key={venueObj.venue.id} className="col-md-3 venue">
+                  <div className="venue-name">{venueObj.venue.name}</div>
+                  <div>
+                    <div className="events-container">
+                    {venueObj.events.map(function(event) {
+                      return (
+                        <div key={event.id} data-id={event.id} className="row event">
+                          <a href={event.url} target="_blank">
+                            <div className="col-md-9 event-info">
+                              <span className="event-name">{event.name}</span>
+                              <div className="description">{event.description}</div>
+                              <div className="date">{event.date}</div>
+                            </div>
+                          </a>
+                          {buildButtons(event.status)}
+                        </div>
+                      )
+                    })}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
           </div>
         </div>
       )

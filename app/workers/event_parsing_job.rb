@@ -1,4 +1,4 @@
-class EventParserWorker
+class EventParsingJob
   include Sidekiq::Worker
 
   def perform(venue_code)
@@ -7,8 +7,6 @@ class EventParserWorker
 
     @config = venue.parser_config
     parse_events!
-  rescue StandardError => e
-    Rails.logger.error(e)
   end
 
   private
@@ -16,24 +14,12 @@ class EventParserWorker
   attr_reader :venue, :config
 
   def parse_events!
-    event_list.each do |event|
-      title = parse_attribute('title', event)
-      url = parse_attribute('url', event)
-      description = parse_attribute('description', event)
-      date = parse_attribute('date', event)
+    fail Exceptions::EmptyCalendarError if event_list.blank?
 
-      Rails.logger.info(event) if [title, url, description, date].any?(&:blank?)
-
-      # Require title
-      next unless title.present?
-
-      Event.create!(
-        name: title,
-        url: url,
-        description: description,
-        date: date,
-        venue_id: venue.id
-      )
+    event_list.each do |data|
+      event = parse(data)
+      next unless event[:name].present?
+      Event.where(event).first_or_create!
     end
   end
 
@@ -51,16 +37,26 @@ class EventParserWorker
     return source unless config[:scrub].present?
 
     config[:scrub].each_pair do |regex, replace|
-      source = source.gsub(regex, replace)
+      source.gsub!(regex, replace)
     end
     source
   end
 
+  def parse(event)
+    {
+      name: parse_attribute(:name, event),
+      url: parse_attribute(:url, event),
+      description: parse_attribute(:description, event),
+      date: parse_attribute(:date, event).to_time(:utc),
+      venue_id: venue.id
+    }
+  end
+
   # Call generic proc on event
   def parse_attribute(attribute, event)
-    config[attribute.to_sym].call(event)
+    config[attribute].call(event)
   rescue NoMethodError
-    Rails.logger.info("Could not parse #{attribute} for event")
+    Rails.logger.info("Could not parse #{attribute} for venue #{venue.code}")
     nil
   end
 end

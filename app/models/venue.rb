@@ -12,7 +12,7 @@ class Venue < ActiveRecord::Base
     find_by_code(BEACON)
   end
 
-  def self.update_all
+  def self.update_all!
     find_each { |venue| EventParsingJob.new.perform(venue.code) }
   end
 

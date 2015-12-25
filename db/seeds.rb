@@ -22,5 +22,13 @@ Venue.where(
   name: 'New York City Ballet',
   latitude: 40.7718891,
   longitude: -73.9833398,
-  address: '2124 Broadway'
+  address: '20 Lincoln Center Plaza'
+).first_or_create!
+
+Venue.where(
+  code: 'WEBSTER_HALL',
+  name: 'Webster Hall',
+  latitude: 40.731763,
+  longitude: -73.9891298,
+  address: '125 E 11th St'
 ).first_or_create!

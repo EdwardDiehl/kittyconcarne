@@ -3,7 +3,7 @@ class Venue < ActiveRecord::Base
   BEACON = 'BEACON'.freeze
   NYC_BALLET = 'NYC_BALLET'.freeze
 
-  has_many :events
+  has_many :events, dependent: :destroy
 
   def self.bowery
     find_by_code(BOWERY)
@@ -14,11 +14,21 @@ class Venue < ActiveRecord::Base
   end
 
   def self.update_all!
-    find_each { |venue| EventParsingJob.new.perform(venue.code) }
+    find_each(&:update!)
+  end
+
+  def update!
+    # If venue has custom parsing logic, call that
+    send("#{code.downcase}_parse!")
+  rescue NoMethodError
+    # Otherwise, run the job
+    EventParsingJob.new.perform(code)
   end
 
   def parser_config
     send("#{code.downcase}_config")
+  rescue NoMethodError
+    nil
   end
 
   private
@@ -74,5 +84,21 @@ class Venue < ActiveRecord::Base
         event.present? ? event.text : nil
       end
     }
+  end
+
+  # Almost as flimsy as the website it's scraping
+  def webster_hall_parse!
+    response = Net::HTTP.get('api.ticketweb.com', '/snl/EventAPI.action?key=kFiQQQiHkGJpeA5xCfHd&version=1&orgId=136373,141422,137573&method=json')
+    json = JSON.parse(response)
+
+    json['events'].each do |event|
+      Event.where(
+        name: event['eventname'],
+        description: event['description'],
+        url: event['eventurl'],
+        date: event['dates']['startdate'].to_time("Eastern Time (US & Canada)").utc,
+        venue_id: id
+      ).first_or_create!
+    end
   end
 end

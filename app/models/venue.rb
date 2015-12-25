@@ -1,6 +1,7 @@
 class Venue < ActiveRecord::Base
-  BOWERY = 'BOWERY'
-  BEACON = 'BEACON'
+  BOWERY = 'BOWERY'.freeze
+  BEACON = 'BEACON'.freeze
+  NYC_BALLET = 'NYC_BALLET'.freeze
 
   has_many :events
 
@@ -48,8 +49,30 @@ class Venue < ActiveRecord::Base
       event_list_item: 'tr',
       name: proc { |e| e.css('.event_name').css('a').first.text },
       url: proc { |e| e.css('.event_name').css('a').first['href'] },
-      date: proc { |e| e.css('.event_date').first.text + ' #{Time.now.year}' },
+      date: proc { |e| e.css('.event_date').first.text + " #{Time.now.utc.year}" },
       description: proc { '$8000 per ticket' }
+    }
+  end
+
+  def nyc_ballet_config
+    {
+      base_url: 'www.nycballet.com',
+      path: '/Season-Tickets/Calendar.aspx',
+      event_list: '.calendarResults',
+      event_list_item: '.results',
+      name: proc do |e|
+        event = e.css('.performancesList').css('.second')
+        event.present? ? event.last.css('li').text : nil
+      end,
+      url: proc do |e|
+        event = e.css('.performancesList').css('.second')
+        event.present? ? event.css('a').first['href'] : nil
+      end,
+      date: proc { |e| e.css('header').css('h6').text + " #{Time.now.utc.year}" },
+      description: proc do |e|
+        event = e.css('.performancesList').css('.collapse').css('.text')
+        event.present? ? event.text : nil
+      end
     }
   end
 end

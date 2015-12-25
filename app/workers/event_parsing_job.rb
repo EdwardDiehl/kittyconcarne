@@ -47,7 +47,7 @@ class EventParsingJob
       name: parse_attribute(:name, event),
       url: parse_attribute(:url, event),
       description: parse_attribute(:description, event),
-      date: parse_attribute(:date, event).to_time(:utc),
+      date: parse_date(:date, event),
       venue_id: venue.id
     }
   end
@@ -58,5 +58,12 @@ class EventParsingJob
   rescue NoMethodError
     Rails.logger.info("Could not parse #{attribute} for venue #{venue.code}")
     nil
+  end
+
+  def parse_date(attribute, event)
+    date = parse_attribute(attribute, event).to_time(:utc)
+
+    # If we go into next calendar year and assumed it was this year, add one year
+    date >= Time.now.utc ? date : date + 1.year
   end
 end

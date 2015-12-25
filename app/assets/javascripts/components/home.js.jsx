@@ -95,7 +95,6 @@ var Venues = React.createClass({
     var bookmark, attend;
 
     function buildButtons(status) {
-      console.log(status)
       if (status === 'bookmarked') {
         bookmark = <span className="fa-bookmark clicked"></span>;
         attend = <span className="fa-plus-circle"></span>;
@@ -121,6 +120,15 @@ var Venues = React.createClass({
       );
     }
 
+    function formatName(name, className = "band") {
+      if (name.indexOf('\n') !== -1) bands = name.split('\n');
+      else bands = [name];
+
+      return bands.map(function(band) {
+        return <div className={className}>{band}</div>
+      })
+    }
+
     if (this.state.eventsData) {
       return (
         <div id="venue-container" className="container-fluid">
@@ -136,8 +144,8 @@ var Venues = React.createClass({
                         <div key={event.id} data-id={event.id} className="row event">
                           <a href={event.url} target="_blank">
                             <div className="col-md-9 event-info">
-                              <span className="event-name">{event.name}</span>
-                              <div className="description">{event.description}</div>
+                              {formatName(event.name)}
+                              {formatName(event.description, "description")}
                               <div className="date">{event.date}</div>
                             </div>
                           </a>
@@ -153,7 +161,7 @@ var Venues = React.createClass({
           </div>
         </div>
       )
-    } 
+    }
     else {
       return (
         <div id="venue-container no-events"></div>
@@ -208,7 +216,7 @@ var Home = React.createClass({
         // <SavedEvents />
         // <Filters />
         // <Map />
-        
+
     return (
       <div>
         <Venues />

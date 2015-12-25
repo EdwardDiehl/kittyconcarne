@@ -8,7 +8,10 @@ class HomeController < ApplicationController
     @events_data = []
 
     Venue.all.each do |venue|
-      @events_data.push( { venue: venue, events: venue.events.with_status(uuid) } )
+      @events_data.push(
+        venue: venue,
+        events: venue.events.chronological.with_status(uuid)
+      )
     end
 
     respond_to do |format|

@@ -39,7 +39,52 @@ class Venue < ActiveRecord::Base
       path: '/calendar',
       event_list: '.tfly-calendar',
       event_list_item: '.vevent',
-      name: proc { |e| e.css('.one-event').css('.url').first.text },
+      name: proc { |e| e.css('.one-event').css('.url').map(&:text).join("\n") },
+      description: proc do |e|
+        e.css('.one-event').css('.supports').map { |s| s.css('a').first.text }.join("\n")
+      end,
+      url: proc { |e| e.css('.one-event').css('.url').first['href'] },
+      date: proc { |e| e.css('.date').css('span').first['title'] }
+    }
+  end
+
+  def music_hall_of_williamsburg_config
+    {
+      base_url: 'www.musichallofwilliamsburg.com',
+      path: '/calendar',
+      event_list: '.tfly-calendar',
+      event_list_item: '.vevent',
+      name: proc { |e| e.css('.one-event').css('.url').map(&:text).join("\n") },
+      description: proc do |e|
+        e.css('.one-event').css('.supports').map { |s| s.css('a').first.text }.join("\n")
+      end,
+      url: proc { |e| e.css('.one-event').css('.url').first['href'] },
+      date: proc { |e| e.css('.date').css('span').first['title'] }
+    }
+  end
+
+  def terminal_five_config
+    {
+      base_url: 'www.terminal5nyc.com',
+      path: '/calendar',
+      event_list: '.tfly-calendar',
+      event_list_item: '.vevent',
+      name: proc { |e| e.css('.one-event').css('.url').map(&:text).join("\n") },
+      description: proc do |e|
+        e.css('.one-event').css('.supports').map { |s| s.css('a').first.text }.join("\n")
+      end,
+      url: proc { |e| e.css('.one-event').css('.url').first['href'] },
+      date: proc { |e| e.css('.date').css('span').first['title'] }
+    }
+  end
+
+  def mercury_lounge_config
+    {
+      base_url: 'www.mercuryloungenyc.com',
+      path: '/calendar',
+      event_list: '.tfly-calendar',
+      event_list_item: '.vevent',
+      name: proc { |e| e.css('.one-event').css('.url').map(&:text).join("\n") },
       description: proc do |e|
         e.css('.one-event').css('.supports').map { |s| s.css('a').first.text }.join("\n")
       end,

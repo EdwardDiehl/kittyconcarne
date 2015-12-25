@@ -1,3 +1,5 @@
+require 'exceptions'
+
 class EventParsingJob
   include Sidekiq::Worker
 

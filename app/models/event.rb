@@ -4,6 +4,10 @@ class Event < ActiveRecord::Base
 
   default_scope { where(is_archived: false) }
 
+  def self.chronological
+    order(:date)
+  end
+
   # Get any statuses for this user-ish
   def self.with_status(uuid)
     return self if uuid.blank?

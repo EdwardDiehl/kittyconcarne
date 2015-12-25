@@ -32,3 +32,27 @@ Venue.where(
   longitude: -73.9891298,
   address: '125 E 11th St'
 ).first_or_create!
+
+Venue.where(
+  code: 'MUSIC_HALL_OF_WILLIAMSBURG',
+  name: 'Music Hall of Williamsburg',
+  latitude: 40.7191396,
+  longitude: -73.9617418,
+  address: '66 N 6th St'
+).first_or_create!
+
+Venue.where(
+  code: 'TERMINAL_FIVE',
+  name: 'Terminal 5',
+  latitude: 40.769741,
+  longitude: -73.99313,
+  address: '610 W 56th St'
+).first_or_create!
+
+Venue.where(
+  code: 'MERCURY_LOUNGE',
+  name: 'Mercury Lounge',
+  latitude: 40.7221,
+  longitude: -73.9867937,
+  address: '217 E Houston St'
+).first_or_create!

@@ -42,13 +42,13 @@
 
     ```bash
     $ cp ./config/database.yml.sample ./config/database.yml
-    $ RAILS_ENV=development rake db:create db:migrate
+    $ RAILS_ENV=development rake db:create db:seed
     ```
 
     Create your test database and setup:
 
     ```bash
-    $ RAILS_ENV=test rake db:create db:migrate
+    $ RAILS_ENV=test rake db:create db:seed
     ```
 
 0. **Add required environment variables**

@@ -93,6 +93,21 @@ class Venue < ActiveRecord::Base
     }
   end
 
+  def rough_trade_config
+    {
+      base_url: 'www.roughtradenyc.com',
+      path: '/calendar',
+      event_list: '.tfly-calendar',
+      event_list_item: '.vevent',
+      name: proc { |e| e.css('.one-event').css('.url').map(&:text).join("\n") },
+      description: proc do |e|
+        e.css('.one-event').css('.supports').map { |s| s.css('a').first.text }.join("\n")
+      end,
+      url: proc { |e| e.css('.one-event').css('.url').first['href'] },
+      date: proc { |e| e.css('.date').css('span').first['title'] }
+    }
+  end
+
   def beacon_config
     {
       base_url: 'www.beacontheatre.com',

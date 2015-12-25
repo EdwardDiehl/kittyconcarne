@@ -7,10 +7,10 @@ class HomeController < ApplicationController
   def events
     @events_data = []
 
-    Venue.all.each do |venue|
+    Venue.find_each do |venue|
       @events_data.push(
         venue: venue,
-        events: venue.events.chronological.with_status(uuid)
+        events: venue.events.by_date_and_venue.with_status(uuid)
       )
     end
 

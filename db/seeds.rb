@@ -56,3 +56,11 @@ Venue.where(
   longitude: -73.9867937,
   address: '217 E Houston St'
 ).first_or_create!
+
+Venue.where(
+  code: 'ROUGH_TRADE',
+  name: 'Rough Trade',
+  latitude: 40.7207973,
+  longitude: -73.9599521,
+  address: '64 N 9th St'
+).first_or_create!

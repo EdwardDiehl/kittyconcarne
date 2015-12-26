@@ -18,10 +18,10 @@ var Venues = React.createClass({
       if (bookmark.hasClass('fa-bookmark-o')) {
         bookmark.removeClass('fa-bookmark-o').addClass('fa-bookmark clicked');
         attending.removeClass('clicked');
-        post('/bookmark');
+        post('/events/save');
       } else {
         bookmark.removeClass('fa-bookmark clicked').addClass('fa-bookmark-o');
-        post('/clear')
+        post('/events/remove')
       }
     });
 

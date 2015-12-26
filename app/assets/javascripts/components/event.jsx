@@ -37,13 +37,13 @@ var Event = React.createClass({
     }
 
     eventClasses = 'row event ';
-    if (event.seen) eventClasses += 'seen';
+    if (event.is_seen) eventClasses += 'seen';
 
     namesMarkup = splitAtNewline(this.props.data.name).map(function(name) {
       return <div className="name">{name}</div>;
     });
 
-    if (this.props.data.saved) {
+    if (this.props.data.is_saved) {
       actionButton = (
         <div className="col-md-6 fa button remove" onClick={this.removeEvent}>
           <span className="fa-times"></span>

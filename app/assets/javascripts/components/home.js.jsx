@@ -32,14 +32,13 @@ var Home = React.createClass({
   },
   render: function() {
     var UnsavedEvents = this.state.eventsData.map($.proxy(function(event) {
-      if (!event.saved) {
+      if (!event.is_saved) {
         return <Event data={event} reload={this.load} key={event.id} />;
       }
     }, this));
 
     var SavedEvents = this.state.eventsData.map($.proxy(function(event) {
-      console.log(event)
-      if (event.saved) {
+      if (event.is_saved) {
         return <Event data={event} reload={this.load} key={event.id} />;
       }
     }, this));

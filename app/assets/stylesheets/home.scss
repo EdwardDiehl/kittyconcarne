@@ -10,6 +10,7 @@ body {
 
 a {
   transition: color .2s ease-out;
+  color: #222;
   text-decoration: none;
   cursor: pointer;
 }
@@ -47,19 +48,17 @@ a {
       font-size: 16px;
       font-weight: 500;
       transition: color .2s ease-out;
-      // text-decoration: none;
+      padding-bottom: 10px;
     }
 
     .description, .date, .venue {
       color: #777;
       font-size: 12px;
       transition: color .2s ease-out;
-      // text-decoration: none;
     }
 
-    div {
-      color: #eee;
-      font-size: 12px;
+    .description {
+      padding-bottom: 8px;
     }
 
     &:hover {
@@ -72,9 +71,10 @@ a {
       //   }
     }
 
-    // .description {
-    //   color: #adadad;
-    //   text-decoration: none;
+    .description {
+      color: #adadad;
+      text-decoration: none;
+    }
 
     //   // &:visited {
     //   //   color: #adadad;

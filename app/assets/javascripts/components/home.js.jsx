@@ -1,18 +1,9 @@
-// EVENT TICKER
-var EventTicker = React.createClass({
-  render: function() {
-    return (
-      <div id="event-ticker-container">Event Ticker</div>
-    );
-  }
-});
-
-
 // VENUES
 var Venues = React.createClass({
   getInitialState: function() {
     return {
-      eventsData: null
+      eventsData: [],
+      bookmarks: []
     };
   },
   enableActions: function() {
@@ -136,6 +127,22 @@ var Venues = React.createClass({
       return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
     }
 
+    function eventList (event) {
+      return (
+        <div key={event.id} data-id={event.id} className="row event">
+          <a href={event.url} target="_blank">
+            <div className="col-md-9 event-info">
+              {formatName(event.name)}
+              {formatName(event.description, "description")}
+              <div className="location">{formatDate(event.date)}</div>
+              <div className="location">{event.venue.name}</div>
+            </div>
+          </a>
+          {buildButtons(event.status)}
+        </div>
+      );
+    }
+
     if (this.state.eventsData) {
       return (
         <div id="venue-container" className="container-fluid">
@@ -145,19 +152,17 @@ var Venues = React.createClass({
               <div>
                 <div className="events-container">
                 {this.state.eventsData.map(function(event) {
-                  return (
-                    <div key={event.id} data-id={event.id} className="row event">
-                      <a href={event.url} target="_blank">
-                        <div className="col-md-9 event-info">
-                          {formatName(event.name)}
-                          {formatName(event.description, "description")}
-                          <div className="location">{formatDate(event.date)}</div>
-                          <div className="location">{event.venue.name}</div>
-                        </div>
-                      </a>
-                      {buildButtons(event.status)}
-                    </div>
-                  )
+                  return eventList(event)
+                })}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-3 venue">
+              <div className="venue-name">Bookmarks</div>
+              <div>
+                <div className="events-container">
+                {this.state.bookmarks.map(function(event) {
+                  return eventList(event)
                 })}
                 </div>
               </div>
@@ -216,11 +221,6 @@ var SavedEvents = React.createClass({
 // HOME
 var Home = React.createClass({
   render: function() {
-        // <EventTicker />
-        // <SavedEvents />
-        // <Filters />
-        // <Map />
-
     return (
       <div>
         <Venues />

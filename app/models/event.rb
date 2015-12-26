@@ -21,4 +21,9 @@ class Event < ActiveRecord::Base
       "AND user_events.uuid = '#{uuid}'")
     .select('events.*, user_events.status')
   end
+
+  def self.bookmarked(uuid)
+    with_status(uuid)
+      .where('status = ?', UserEvent::Status::BOOKMARKED)
+  end
 end

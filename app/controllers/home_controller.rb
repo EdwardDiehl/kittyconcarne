@@ -5,8 +5,6 @@ class HomeController < ApplicationController
   end
 
   def events
-    @events_data = []
-
     respond_to do |format|
       format.json do
         render json: Event.by_date_and_venue.with_status(uuid), root: nil

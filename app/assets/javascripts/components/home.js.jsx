@@ -31,30 +31,33 @@ var Home = React.createClass({
     this.load();
   },
   render: function() {
-    var AllEvents = this.state.eventsData.map($.proxy(function(event) {
-      return <Event data={event} reload={this.load} key={event.id} />;
+    var UnsavedEvents = this.state.eventsData.map($.proxy(function(event) {
+      if (!event.saved) {
+        return <Event data={event} reload={this.load} key={event.id} />;
+      }
     }, this));
 
     var SavedEvents = this.state.eventsData.map($.proxy(function(event) {
-      if (event.status) {
+      console.log(event)
+      if (event.saved) {
         return <Event data={event} reload={this.load} key={event.id} />;
       }
     }, this));
 
     if (this.state.eventsData.length > 0) {
       return (
-        <div id="venue-container" className="container-fluid">
+        <div id="events-container" className="container-fluid">
           <div className="row">
-            <div className="col-md-3 venue">
-              <div className="venue-name">All Events</div>
+            <div className="col-md-3 event-list">
+              <div className="title">All Events</div>
               <div>
-                <div className="events-container">{AllEvents}</div>
+                <div>{UnsavedEvents}</div>
               </div>
             </div>
-            <div className="col-md-3 venue">
-              <div className="venue-name">Saved</div>
+            <div className="col-md-3 event-list">
+              <div className="title">Saved</div>
               <div>
-                <div className="events-container">{SavedEvents}</div>
+                <div>{SavedEvents}</div>
               </div>
             </div>
           </div>
@@ -63,7 +66,7 @@ var Home = React.createClass({
     }
     else {
       return (
-        <div id="venue-container no-events"></div>
+        <div id="events-container no-events"></div>
       )
     }
   }

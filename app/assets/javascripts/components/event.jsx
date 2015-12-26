@@ -20,54 +20,54 @@ var Event = React.createClass({
     this.post('/events/remove');
   },
   render: function() {
-    var actionButton;
+    var eventClasses, namesMarkup, actionButton;
 
-    if (this.props.data.status) {
-      actionButton = (
-        <div className="col-md-6 fa remove" onClick={this.removeEvent}>
-          <span className="fa-times"></span>
-        </div>
-      );
-    } else {
-      actionButton = (
-        <div className="col-md-6 fa save" onClick={this.saveEvent}>
-          <span className="fa-plus-circle"></span>
-        </div>
-      );
-    }
+    var splitAtNewline = $.proxy(function(str) {
+      var text;
 
-    function formatName(name, className = "band") {
-      if (name === undefined) return;
+      if (str.indexOf('\n') !== -1) text = str.split('\n');
+      else text = [str];
 
-      if (name.indexOf('\n') !== -1) bands = name.split('\n');
-      else bands = [name];
-
-      return bands.map(function(band) {
-        return <div className={className}>{band}</div>;
-      })
-    }
+      return text;
+    }, this);
 
     function formatDate(dateString) {
       var date = new Date(dateString);
       return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
     }
 
-    function statusClass(event) {
-      if(event.status === null) return 'new';
-      else return '';
+    eventClasses = 'row event ';
+    if (event.seen) eventClasses += 'seen';
+
+    namesMarkup = splitAtNewline(this.props.data.name).map(function(name) {
+      return <div className="name">{name}</div>;
+    });
+
+    if (this.props.data.saved) {
+      actionButton = (
+        <div className="col-md-6 fa button remove" onClick={this.removeEvent}>
+          <span className="fa-times"></span>
+        </div>
+      );
+    } else {
+      actionButton = (
+        <div className="col-md-6 fa button save" onClick={this.saveEvent}>
+          <span className="fa-plus-circle"></span>
+        </div>
+      );
     }
 
     return (
-      <div data-id={this.props.data.id} className={'row event ' + statusClass(this.props.data)}>
-        <a href={this.props.data.url} target="_blank">
-          <div className="col-md-9 event-info">
-            {formatName(this.props.data.name)}
-            {formatName(this.props.data.description, 'description')}
-            <div className="location">{formatDate(this.props.data.date)}</div>
-            <div className="location">{this.props.data.venue.name}</div>
-          </div>
-        </a>
-        <div className="col-md-3 buttons">
+      <div data-id={this.props.data.id} className={eventClasses}>
+        <div className="col-md-9 info">
+          <a href={this.props.data.url} target="_blank">
+            {namesMarkup}
+          </a>
+          <div className="description">{this.props.data.description.substring(0, 256)}</div>
+          <div className="date">{formatDate(this.props.data.date)}</div>
+          <div className="venue">{this.props.data.venue.name}</div>
+        </div>
+        <div className="col-md-3">
           <div className="row">
             {actionButton}
           </div>

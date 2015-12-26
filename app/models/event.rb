@@ -9,7 +9,8 @@ class Event < ActiveRecord::Base
   end
 
   def self.by_date_and_venue
-    order(:date, :venue_id)
+    includes(:venue)
+      .order(:date, :venue_id)
   end
 
   # Get any statuses for this user-ish

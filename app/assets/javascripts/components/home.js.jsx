@@ -121,6 +121,8 @@ var Venues = React.createClass({
     }
 
     function formatName(name, className = "band") {
+      if (name === undefined) return;
+
       if (name.indexOf('\n') !== -1) bands = name.split('\n');
       else bands = [name];
 
@@ -129,35 +131,37 @@ var Venues = React.createClass({
       })
     }
 
+    function formatDate(dateString) {
+      var date = new Date(dateString);
+      return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+    }
+
     if (this.state.eventsData) {
       return (
         <div id="venue-container" className="container-fluid">
           <div className="row">
-            {this.state.eventsData.map(function(venueObj) {
-              return (
-                <div key={venueObj.venue.id} className="col-md-3 venue">
-                  <div className="venue-name">{venueObj.venue.name}</div>
-                  <div>
-                    <div className="events-container">
-                    {venueObj.events.map(function(event) {
-                      return (
-                        <div key={event.id} data-id={event.id} className="row event">
-                          <a href={event.url} target="_blank">
-                            <div className="col-md-9 event-info">
-                              {formatName(event.name)}
-                              {formatName(event.description, "description")}
-                              <div className="date">{event.date}</div>
-                            </div>
-                          </a>
-                          {buildButtons(event.status)}
+            <div className="col-md-3 venue">
+              <div className="venue-name">All Events</div>
+              <div>
+                <div className="events-container">
+                {this.state.eventsData.map(function(event) {
+                  return (
+                    <div key={event.id} data-id={event.id} className="row event">
+                      <a href={event.url} target="_blank">
+                        <div className="col-md-9 event-info">
+                          {formatName(event.name)}
+                          {formatName(event.description, "description")}
+                          <div className="location">{formatDate(event.date)}</div>
+                          <div className="location">{event.venue.name}</div>
                         </div>
-                      )
-                    })}
+                      </a>
+                      {buildButtons(event.status)}
                     </div>
-                  </div>
+                  )
+                })}
                 </div>
-              )
-            })}
+              </div>
+            </div>
           </div>
         </div>
       )

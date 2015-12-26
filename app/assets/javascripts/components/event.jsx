@@ -52,8 +52,13 @@ var Event = React.createClass({
       return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
     }
 
+    function statusClass(event) {
+      if(event.status === null) return 'new';
+      else return '';
+    }
+
     return (
-      <div data-id={this.props.data.id} className="row event">
+      <div data-id={this.props.data.id} className={'row event ' + statusClass(this.props.data)}>
         <a href={this.props.data.url} target="_blank">
           <div className="col-md-9 event-info">
             {formatName(this.props.data.name)}

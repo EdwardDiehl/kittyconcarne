@@ -4,26 +4,38 @@ class Event < ActiveRecord::Base
 
   default_scope { where(is_archived: false) }
 
-  def self.chronological
-    order(:date)
-  end
+  class << self
+    def chronological
+      order(:date)
+    end
 
-  def self.by_date_and_venue
-    includes(:venue)
-      .order(:date, :venue_id)
-  end
+    def by_date_and_venue
+      includes(:venue)
+        .order(:date, :venue_id)
+    end
 
-  # Get any statuses for this user-ish
-  def self.with_status(uuid)
-    return self if uuid.blank?
-    joins('LEFT JOIN user_events '\
-      'ON user_events.event_id = events.id '\
-      "AND user_events.uuid = '#{uuid}'")
-    .select('events.*, user_events.status')
-  end
+    def with_status(uuid)
+      with_user_event_status(uuid)
+        .select('events.*, user_events.status')
+    end
 
-  def self.bookmarked(uuid)
-    with_status(uuid)
-      .where('status = ?', UserEvent::Status::BOOKMARKED)
+    def with_no_status(uuid)
+      with_user_event_status(uuid)
+        .where(user_events: { id: nil })
+    end
+
+    def bookmarked(uuid)
+      with_status(uuid)
+        .where('status = ?', UserEvent::Status::BOOKMARKED)
+    end
+
+    private
+
+    # Left join the event status for this user, because it may not be set
+    def with_user_event_status(uuid)
+      joins('LEFT JOIN user_events '\
+        'ON user_events.event_id = events.id '\
+        "AND user_events.uuid = '#{uuid}'")
+    end
   end
 end

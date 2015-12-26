@@ -1,4 +1,6 @@
 class EventsController < HomeController
+  after_filter :set_events_to_seen
+
   def index
     respond_to do |format|
       format.json do
@@ -10,29 +12,29 @@ class EventsController < HomeController
   # POSTs
 
   def save
-    render json: update_event_status!(UserEvent::Status::BOOKMARKED)
+    update_event_status!(UserEvent::Status::BOOKMARKED)
+    head :no_content
   end
 
   def remove
-    UserEvent.where(
-      uuid: cookies.signed[:uuid],
-      event_id: params[:event_id]
-    ).destroy_all
-
+    update_event_status!(UserEvent::Status::SEEN)
     head :no_content
   end
 
   private
 
+  def set_events_to_seen
+    Event.with_no_status(uuid).find_each do |event|
+      UserEvent.create_seen_status!(event: event, uuid: uuid)
+    end
+  end
+
   # Set status for this session
   def update_event_status!(status)
-    # Check that the event and cookie exist
     event = Event.find(params[:event_id])
-    return false if [cookies.signed[:uuid], event].any?(&:blank?)
+    return if [cookies.signed[:uuid], event].any?(&:blank?)
 
-    # Update status
     session_user_event.update_attributes!(status: status)
-    true
   end
 
   def session_user_event

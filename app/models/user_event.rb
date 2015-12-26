@@ -2,8 +2,7 @@ class UserEvent < ActiveRecord::Base
   belongs_to :event
 
   module Status
-    BOOKMARKED = 'bookmarked'
-    ATTENDING = 'attending'
+    SAVED = 'saved'
     SEEN = 'seen'
   end
 

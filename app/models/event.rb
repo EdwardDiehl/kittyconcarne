@@ -24,9 +24,9 @@ class Event < ActiveRecord::Base
         .where(user_events: { id: nil })
     end
 
-    def bookmarked(uuid)
+    def saved(uuid)
       with_status(uuid)
-        .where('status = ?', UserEvent::Status::BOOKMARKED)
+        .where('status = ?', UserEvent::Status::SAVED)
     end
 
     private

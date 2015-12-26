@@ -12,7 +12,7 @@ class EventsController < HomeController
   # POSTs
 
   def save
-    update_event_status!(UserEvent::Status::BOOKMARKED)
+    update_event_status!(UserEvent::Status::SAVED)
     head :no_content
   end
 

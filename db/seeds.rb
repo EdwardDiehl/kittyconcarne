@@ -7,6 +7,11 @@ Venue.where(
 ).first_or_create!
 
 Venue.where(
+  code: 'BOWERY_PRESENTS',
+  name: 'Bowery presents...',
+).first_or_create!
+
+Venue.where(
   code: 'BEACON',
   name: 'Beacon Theatre',
   latitude: 40.7805215,

@@ -48,6 +48,21 @@ class Venue < ActiveRecord::Base
     }
   end
 
+  def bowery_presents_config
+    {
+      base_url: 'www.bowerypresents.com',
+      path: '/calendar/',
+      event_list: '.tfly-calendar',
+      event_list_item: '.one-event',
+      name: proc { |e| e.css('.url').map(&:text).join("\n") },
+      description: proc do |e|
+        e.css('.supports').map { |s| s.css('a').first.text }.join("\n")
+      end,
+      url: proc { |e| e.css('.url').first['href'] },
+      date: proc { |e| e.parent.css('.date').css('span').first['title'] }
+    }
+  end
+
   def music_hall_of_williamsburg_config
     {
       base_url: 'www.musichallofwilliamsburg.com',
